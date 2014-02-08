@@ -1,0 +1,1 @@
+read filelex and syntax analasys OR straight into interpretinghave a char* malloc 256 bytes, = putchar - COMMA. = readchar - DOT> = pointer++ - PINC< = pointer-- - PDEC+ = (*pointer)++ - VINC- = (*pointer)-- - VDEC[ = find next ] and save a pointer to there, when value is 0 jump] = pointer ++ or have [ save a pointer to the next instruction
