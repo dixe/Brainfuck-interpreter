@@ -7,7 +7,7 @@
 #include "parser.h"
 #include <stdio.h>
 
-struct instlist* parse_prog(FILE* fp, struct instlist* list){
+void parse_prog(FILE* fp, struct instlist* list){
 
   struct node* node = NULL;
   char c;
@@ -53,7 +53,4 @@ struct instlist* parse_prog(FILE* fp, struct instlist* list){
         break;
       }
   }
-
-  return list;
-
 }

@@ -10,6 +10,6 @@
 #include <stdio.h>
 
 // takes a file pointer and return a inslist
-struct instlist* parse_prog(FILE *fp, struct instlist* list);
+void parse_prog(FILE *fp, struct instlist* list);
 
 #endif /*PARSER_H*/
