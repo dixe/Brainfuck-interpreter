@@ -2,6 +2,9 @@
 /*
  * the different types of instructions there are
  */
+
+#ifndef INSTLIST_H
+#define INSTLIST_H
 typedef enum {COMMA, DOT, PINC, PDEC, VINC, VDEC, LSTART, LEND} instruction;
 
 // linked list of instructions
@@ -30,3 +33,5 @@ struct node* list_malloc_node(instruction data);
 
 //print the list
 void list_print(struct instlist* list);
+
+#endif /* INSTLIST_H*/
