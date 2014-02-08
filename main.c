@@ -4,6 +4,7 @@
  */
 
 #include "instlist.h"
+#include "interpret.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -27,6 +28,8 @@ int main(int argc, char **argv){
     // everything is good, we can parse the program, then print the
     // instruction list
     parse_prog(file,list);
+    interpret(list);
+    printf("\n");
     list_print(list);
   }
 
