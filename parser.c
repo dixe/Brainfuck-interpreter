@@ -1,14 +1,19 @@
+/*
+ * Simple parser for brainfuck, just return a list of
+ * the program in enum instructions
+ */
+
 #include <stdio.h>
 #include "parser.h"
+#include <stdio.h>
 
-struct instlist parse(FILE *fp){
-  struct instlist list = list_init();
+struct instlist* parse_prog(FILE* fp, struct instlist* list){
+
   struct node* node = NULL;
   char c;
 
   while((c=fgetc(fp)) != EOF){
       //allocate space for new pointer
-
       switch (c){
       case '+':
         node = list_malloc_node(VINC);
@@ -34,7 +39,7 @@ struct instlist parse(FILE *fp){
         node = list_malloc_node(COMMA);
         add_node(list,node);
         break;
-      case '[.':
+      case '[':
         node = list_malloc_node(LSTART);
         add_node(list,node);
         break;
@@ -44,10 +49,9 @@ struct instlist parse(FILE *fp){
         break;
       default:
         // Error not a valid brainfuck command
-        return -1;
+        putchar(c);
         break;
       }
-
   }
 
   return list;
