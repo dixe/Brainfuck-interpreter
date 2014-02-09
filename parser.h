@@ -9,7 +9,7 @@
 #include "instlist.h"
 #include <stdio.h>
 
-// takes a file pointer and return a inslist
+// takes a file pointer and a instruction list, pointer returns nothing
 void parse_prog(FILE *fp, struct instlist* list);
 
 #endif /*PARSER_H*/
