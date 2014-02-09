@@ -15,7 +15,7 @@ struct loop_{
 };
 
 // return 0 on succes interpretation, and -1 on error
-int interpret(struct instlist* list);
+int interpret(struct instlist* list, int debug);
 
 
 
