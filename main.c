@@ -5,6 +5,7 @@
 
 #include "instlist.h"
 #include "interpret.h"
+#include "parser.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -30,7 +31,7 @@ int main(int argc, char **argv){
     parse_prog(file,list);
     interpret(list);
     printf("\n");
-    list_print(list);
+    //    list_print(list);
   }
 
   fclose(file);
