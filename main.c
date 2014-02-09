@@ -15,8 +15,8 @@ int main(int argc, char **argv){
 
   FILE *file;
 
-  if(argc != 2){
-    printf("Usage: %s file.exe\n", argv[0]);
+  if(argc < 2){
+    printf("Usage: %s file.exe optimal debug\n", argv[0]);
     exit(1);
   }
   file = fopen(argv[1],"r");
@@ -28,9 +28,15 @@ int main(int argc, char **argv){
   else{
     // everything is good, we can parse the program, then print the
     // instruction list
+    int debug =0;
+    if (argc == 3){
+      debug=1;
+    }
     parse_prog(file,list);
-    interpret(list);
-    //list_print(list);
+    //    list_print(list);
+    interpret(list,debug);
+
+
   }
 
   fclose(file);

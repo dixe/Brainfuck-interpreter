@@ -9,17 +9,19 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-struct node* loop2(char* bpointer,  struct loop_* loop, const char* start);
+char* bpointer;
+
+struct node* loop2( struct loop_* loop, const char* start, int debug);
 
 struct loop_* create_loop(struct node* node);
 
-int interpret(struct instlist* list){
+int interpret(struct instlist* list,int debug){
 
   // allocate memory for the brainfuck environment
-  char* bpointer = malloc(2048); // malloc 2 mbyte
+  bpointer = malloc(2048); // malloc 2 mbyte
   const char* start = bpointer;
   struct node* node = list->head; // init node to head
-
+  struct loop_* loop = NULL;
   //init to alle to 0
   for(int i = 0; i<2048;i++){
     bpointer[i] = 0;
@@ -33,7 +35,7 @@ int interpret(struct instlist* list){
 
 
   /*
-   * loop where interpretations happens
+   * loop where interpretation happens
    */
   while(node != NULL){
     switch(node->data){
@@ -61,17 +63,26 @@ int interpret(struct instlist* list){
       bpointer--;
         break;
     case LSTART:
-      //node = loop(bpointer,node);
-      node = loop2(bpointer, create_loop(node), start);
+      if(*bpointer !=0){
+        node = loop2( create_loop(node), start,debug);
+      }
+      else{ // create a loop and set next node to the end of the loop
+        loop = create_loop(node);
+        node = loop->end;
+      }
       break;
     case LEND:
-      //DO nothing gets handles in loop() function
+      //printf("We hane a LEND in interpreter");
       break;
     case DEBUG:
-      printf("Pointer: %i, value at pointer %i \n",bpointer-start, *bpointer);
+      if(debug){
+        printf("Pointer: %i, value at pointer %i \n", bpointer-start, *bpointer);
+        getchar();
+        fflush(stdin);
+      }
       break;
     default:
-      printf("default print, we need some cases");
+      printf("default print, we need some cases, in interpreter");
       break;
       }
 
@@ -90,8 +101,10 @@ int interpret(struct instlist* list){
 //function to handle loop
 // takes the global brainfcuk pointer and a new loop pointer
 // loop pointer points to end of loop
-struct node* loop2(char* bpointer,  struct loop_* loop, const char* start){
+struct node* loop2( struct loop_* loop, const char* start,int debug){
+
   struct node* node = loop->start;
+  struct loop_* tmp_loop = NULL;
 
   while(node != NULL){
     switch(node->data){
@@ -119,8 +132,15 @@ struct node* loop2(char* bpointer,  struct loop_* loop, const char* start){
       bpointer--;
       break;
     case LSTART:
-      if(node != loop->start){
-        node = loop2(bpointer, create_loop(node), start);
+      if(*bpointer == 0 && node == loop->start){ // loop should not run
+        return loop->end; // return end of loop to continiue interpretation
+      }
+      else if(node != loop->start && *bpointer !=0){ // if we encounter a new loop run that
+        node = loop2(create_loop(node), start, debug);
+      }
+      else if (node!=loop->start){ // create a loop and set next node to the end of the loop
+        tmp_loop = create_loop(node);
+        node = tmp_loop->end;
       }
       break;
     case LEND:
@@ -129,15 +149,19 @@ struct node* loop2(char* bpointer,  struct loop_* loop, const char* start){
           node = loop->start; // rest back to start of loop code
         }
         else{
-          return node; //loop->end; // else return and continiue in interpret
+          return node; //loop->end; // else return and continiue interpret
         }
       }
       break;
     case DEBUG:
-      printf("Pointer: %i, value at pointer %i \n",bpointer - start, *bpointer);
+      if(debug){
+        printf("Pointer: %i, value at pointer %i \n",bpointer - start, *bpointer);
+        getchar();
+        fflush(stdin);
+      }
       break;
     default:
-      printf("default print, we need some cases");
+      printf("default print, we need some cases, in loop");
       break;
     }
     //next instruction
