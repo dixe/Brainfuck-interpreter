@@ -29,7 +29,7 @@ int interpret(struct instlist* list){
     printf("empty file, interpretation ended");
     free(bpointer);
     return 0;
-  }git status
+  }
 
 
   /*
