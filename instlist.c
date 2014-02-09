@@ -83,7 +83,6 @@ void list_print(struct instlist* list){
 
 struct node* tmp = list->head;
 
-  int length =1;
 
   if(tmp == NULL){
     //empty list, say so
@@ -117,7 +116,6 @@ struct node* tmp = list->head;
       case LEND:
         printf("] ");
         break;
-
       default:
         printf("defaultprint, we need some cases");
         break;

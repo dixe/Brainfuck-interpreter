@@ -30,7 +30,6 @@ int main(int argc, char **argv){
     // instruction list
     parse_prog(file,list);
     interpret(list);
-    printf("\n");
     //    list_print(list);
   }
 
