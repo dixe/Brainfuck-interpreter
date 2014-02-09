@@ -116,6 +116,9 @@ struct node* tmp = list->head;
       case LEND:
         printf("] ");
         break;
+      case DEBUG:
+        printf("Debug ");
+        break;
       default:
         printf("defaultprint, we need some cases");
         break;

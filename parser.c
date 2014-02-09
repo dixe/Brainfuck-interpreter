@@ -47,9 +47,12 @@ void parse_prog(FILE* fp, struct instlist* list){
         node = list_malloc_node(LEND);
         add_node(list,node);
         break;
+      case '#':
+        node = list_malloc_node(DEBUG);
+        add_node(list,node);
+        break;
       default:
-        // Error not a valid brainfuck command
-        putchar(c);
+        // not a command, do nothing
         break;
       }
   }

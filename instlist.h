@@ -5,7 +5,7 @@
 
 #ifndef INSTLIST_H
 #define INSTLIST_H
-typedef enum {COMMA, DOT, PINC, PDEC, VINC, VDEC, LSTART, LEND} instruction;
+typedef enum {COMMA, DOT, PINC, PDEC, VINC, VDEC, LSTART, LEND, DEBUG} instruction;
 
 // linked list of instructions
 struct node {

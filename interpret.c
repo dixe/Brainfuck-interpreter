@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-struct node* loop2(char* bpointer,  struct loop_* loop);
+struct node* loop2(char* bpointer,  struct loop_* loop, const char* start);
 
 struct loop_* create_loop(struct node* node);
 
@@ -17,6 +17,7 @@ int interpret(struct instlist* list){
 
   // allocate memory for the brainfuck environment
   char* bpointer = malloc(2048); // malloc 2 mbyte
+  const char* start = bpointer;
   struct node* node = list->head; // init node to head
 
   //init to alle to 0
@@ -35,39 +36,42 @@ int interpret(struct instlist* list){
    */
   while(node != NULL){
     switch(node->data){
-      case COMMA:
-        *bpointer = getchar();
-        /* when useing getchar(), the enter is still in buffer
-         * if we did not do this, the next , would give
+    case COMMA:
+      *bpointer = getchar();
+      /* when useing getchar(), the enter is still in buffer
+       * if we did not do this, the next , would give
          * the user a change to input something
          */
-        fflush(stdin);
+      fflush(stdin);
+      break;
+    case VINC:
+      *bpointer += 1;
+      break;
+    case DOT:
+      putchar(*bpointer);
+      break;
+    case VDEC:
+      *bpointer -= 1;
+      break;
+    case PINC:
+      bpointer++;
+      break;
+    case PDEC:
+      bpointer--;
         break;
-      case VINC:
-        *bpointer += 1;
-        break;
-      case DOT:
-        putchar(*bpointer);
-        break;
-      case VDEC:
-        *bpointer -= 1;
-        break;
-      case PINC:
-        bpointer++;
-        break;
-      case PDEC:
-        bpointer--;
-        break;
-      case LSTART:
-        //node = loop(bpointer,node);
-        node = loop2(bpointer, create_loop(node));
-        break;
-      case LEND:
-        //DO nothing gets handles in loop() function
-        break;
-      default:
-        printf("default print, we need some cases");
-        break;
+    case LSTART:
+      //node = loop(bpointer,node);
+      node = loop2(bpointer, create_loop(node), start);
+      break;
+    case LEND:
+      //DO nothing gets handles in loop() function
+      break;
+    case DEBUG:
+      printf("Pointer: %i, value at pointer %i \n",bpointer-start, *bpointer);
+      break;
+    default:
+      printf("default print, we need some cases");
+      break;
       }
 
     //next instruction
@@ -85,7 +89,7 @@ int interpret(struct instlist* list){
 //function to handle loop
 // takes the global brainfcuk pointer and a new loop pointer
 // loop pointer points to end of loop
-struct node* loop2(char* bpointer,  struct loop_* loop){
+struct node* loop2(char* bpointer,  struct loop_* loop, const char* start){
   struct node* node = loop->start;
 
   while(node != NULL){
@@ -115,18 +119,21 @@ struct node* loop2(char* bpointer,  struct loop_* loop){
       break;
     case LSTART:
       if(node != loop->start){
-        node = loop2(bpointer, create_loop(node));
+        node = loop2(bpointer, create_loop(node), start);
       }
       break;
     case LEND:
-      //if ( node == loop->end){ // if it is not the end, keep going
+      if ( node == loop->end){ // if it is not the end, keep going
         if(*bpointer !=0){
           node = loop->start; // rest back to start of loop code
         }
         else{
           return node; //loop->end; // else return and continiue in interpret
         }
-        //      }
+      }
+      break;
+    case DEBUG:
+      printf("Pointer: %i, value at pointer %i \n",bpointer - start, *bpointer);
       break;
     default:
       printf("default print, we need some cases");
